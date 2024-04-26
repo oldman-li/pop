@@ -15,7 +15,7 @@
 import streamlit as st
 from streamlit.logger import get_logger
 import replicate
-REPLICATE_API_TOKEN='r8_NQCR950SeXpJaegSE71QUxyYj3i6cZs3OxtAq'
+REPLICATE_API_TOKEN='r8_9iriilvAwoY8Eat4IKWjbTNM3Gx9fNG2I2iFD'
 LOGGER = get_logger(__name__)
 
 def run():
