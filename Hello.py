@@ -14,38 +14,49 @@
 
 import streamlit as st
 from streamlit.logger import get_logger
-
+import replicate
+REPLICATE_API_TOKEN='r8_NQCR950SeXpJaegSE71QUxyYj3i6cZs3OxtAq'
 LOGGER = get_logger(__name__)
-
 
 def run():
     st.set_page_config(
         page_title="Hello",
         page_icon="👋",
     )
-
-    st.write("# Welcome to Streamlit! 👋")
-
-    st.sidebar.success("Select a demo above.")
-
+    
+    st.write("# Welcome to MusicGen👋")
     st.markdown(
         """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
+        Please describe the music in natural language.
     """
     )
+    st.sidebar.success("Select a demo above.")
+    
+    if prompt := st.chat_input():
+        st.chat_message("user").write(prompt)
+        output = replicate.run(
+        "nateraw/musicgen-songstarter-v0.2:020ac56a613f4494065e2e5544c7377788a8abcfbe645ecb8146634de0bc383e",
+        input={
+            "top_k": 250,
+            "top_p": 0,
+            "prompt": prompt,
+            "duration": 10,
+            "input_audio": "https://ting8.yymp3.com/new27/ybe/1.mp3",
+            "temperature": 1,
+            "continuation": False,
+            "output_format": "wav",
+            "continuation_start": 0,
+            "normalization_strategy": "loudness",
+            "classifier_free_guidance": 3
+        })
+        st.audio(output[0])
+        st.audio(output[1])
+        st.audio(output[2])
 
-
+   
+   
+   
 if __name__ == "__main__":
-    run()
+
+#   print(output)
+  run()
